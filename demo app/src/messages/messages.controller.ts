@@ -5,12 +5,15 @@ import {
   NotFoundException,
   Param,
   Post,
+  Query,
   Render,
 } from '@nestjs/common';
 import { CreateMessageDto } from './dtos/create-message.dto';
 import { MessagesService } from './messages.service';
+import { ApiBody, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @Controller('messages')
+@ApiTags('Messages')
 export class MessagesController {
   constructor(private messageService: MessagesService) {}
 
@@ -26,7 +29,17 @@ export class MessagesController {
   }
 
   @Get(':id')
-  getMessage(@Param() id: string) {
+  @ApiParam({
+    name: 'id',
+    required: true,
+    type: 'string',
+  })
+  @ApiQuery({
+    name: 'd',
+    required: false,
+    type: 'string',
+  })
+  getMessage(@Param() id: string, @Query() d: string) {
     const message = this.messageService.findOne(id);
     if (!message) {
       throw new NotFoundException('Không tìm thấy message');
