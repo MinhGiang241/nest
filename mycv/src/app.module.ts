@@ -36,8 +36,8 @@ import * as path from 'path';
       }),
       resolvers: [
         new QueryResolver(['lang', 'l']),
-        new HeaderResolver(['x-custom-lang']),
-        new CookieResolver(),
+        new HeaderResolver(['x-lang']),
+        new CookieResolver(['lang', 'l']),
         AcceptLanguageResolver,
       ],
       inject: [ConfigService],

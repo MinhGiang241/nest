@@ -1,3 +1,6 @@
 {
-  "HELLO": "Xin chào"
+  "HELLO": "Xin chào",
+  "invalid_email": "Email không hợp lệ",
+  "string_pass": "Password phải là ký tự",
+  "user_not_found": "Không tìm thấy user"
 }

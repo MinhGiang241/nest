@@ -7,7 +7,7 @@ import {
 import { join } from 'path';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
-import { I18nValidationPipe } from 'nestjs-i18n';
+import { I18nValidationExceptionFilter, I18nValidationPipe } from 'nestjs-i18n';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -17,7 +17,7 @@ async function bootstrap() {
 
   app.enableCors({
     origin: ['*'], // Chỉ định các nguồn gốc được phép
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Chỉ định các phương thức HTTP được phép
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], // Chỉ định các phương thức HTTP được phép
     allowedHeaders: ['Content-Type', 'Authorization'], // Chỉ định các tiêu đề được phép
     credentials: true, // Cho phép gửi thông tin xác thực (cookie, authorization headers)
   });
@@ -33,16 +33,11 @@ async function bootstrap() {
   //   templates: join(__dirname, '..', 'views'),
   // });
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-    }),
-  );
-
-  app.useGlobalPipes(new I18nValidationPipe());
+  app.useGlobalPipes(new I18nValidationPipe({ whitelist: true }));
+  app.useGlobalFilters(new I18nValidationExceptionFilter());
 
   const config = new DocumentBuilder()
-    .setTitle('Message example')
+    .setTitle('Car example')
     .setDescription('The cats API description')
     .setVersion('1.0')
     .addBearerAuth()

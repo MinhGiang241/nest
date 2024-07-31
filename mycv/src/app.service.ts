@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { I18nContext, I18nService } from 'nestjs-i18n';
 
 @Injectable()
