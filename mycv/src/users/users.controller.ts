@@ -9,11 +9,18 @@ import {
   Post,
   Query,
   UseFilters,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateUserDto, UpdateUserDto } from './dtos/create-user.dto';
 import { I18nValidationExceptionFilter } from 'nestjs-i18n';
 import { UsersService } from './users.service';
+import {
+  Serialize,
+  Serializeinterceptor,
+} from 'src/interceptors/serialize.interceptor';
+import { UserDto } from './dtos/user.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -22,6 +29,7 @@ import { UsersService } from './users.service';
     detailedErrors: false,
   }),
 )
+@Serialize(UserDto)
 export class UsersController {
   constructor(private userService: UsersService) {}
 
@@ -30,8 +38,10 @@ export class UsersController {
     return this.userService.create(body.email, body.password);
   }
 
+  //@UseInterceptors(new Serializeinterceptor(UserDto)) // ClassSerializerInterceptor
   @Get('/:id')
   findByUser(@Param('id') id: string) {
+    console.log('handler is running');
     return this.userService.findById(parseInt(id, 0));
   }
 

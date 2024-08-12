@@ -14,6 +14,7 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter(),
   );
+  app.setGlobalPrefix('api');
 
   app.enableCors({
     origin: ['*'], // Chỉ định các nguồn gốc được phép
