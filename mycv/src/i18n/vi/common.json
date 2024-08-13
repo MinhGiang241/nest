@@ -2,5 +2,7 @@
   "HELLO": "Xin chào",
   "invalid_email": "Email không hợp lệ",
   "string_pass": "Password phải là ký tự",
-  "user_not_found": "Không tìm thấy user"
+  "user_not_found": "Không tìm thấy user",
+  "email_in_use": "Email đã được sử dụng",
+  "bad_password": "password không hợp lệ"
 }

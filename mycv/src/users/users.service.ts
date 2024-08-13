@@ -24,6 +24,10 @@ export class UsersService {
   }
 
   findById(id: number) {
+    console.log('id', id);
+    if (!id) {
+      return null;
+    }
     return this.repo.findOne({ where: { id } });
   }
 

@@ -5,16 +5,29 @@ import {
   FastifyAdapter,
 } from '@nestjs/platform-fastify';
 import { join } from 'path';
+import { randomBytes, scrypt as _scrypt } from 'crypto';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ValidationPipe } from '@nestjs/common';
 import { I18nValidationExceptionFilter, I18nValidationPipe } from 'nestjs-i18n';
+// const cookieSession = require('cookie-session');
+import secureSession from '@fastify/secure-session';
+import { promisify } from 'util';
+
+const scrypt = promisify(_scrypt);
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter(),
   );
-  app.setGlobalPrefix('api', { exclude: ['/'] });
+  const salt = randomBytes(8).toString('hex');
+  const secret = (await scrypt('helloworld', salt, 32)) as Buffer;
+
+  await app.register(secureSession, {
+    secret,
+    salt,
+  });
+
+  app.setGlobalPrefix('api', { exclude: ['/view'] }); // lỗi i18n nếu thêm { exclude: ['/'] }
 
   app.enableCors({
     origin: ['*'], // Chỉ định các nguồn gốc được phép
@@ -38,10 +51,11 @@ async function bootstrap() {
   app.useGlobalFilters(new I18nValidationExceptionFilter());
 
   const config = new DocumentBuilder()
-    .setTitle('Car example')
-    .setDescription('The cats API description')
+    .setTitle('Example')
+    .setDescription('The API description')
     .setVersion('1.0')
     .addBearerAuth()
+    .addCookieAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document, {

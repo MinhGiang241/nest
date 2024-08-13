@@ -20,5 +20,7 @@
   "nested": "We go shopping: $t(test.day_interval, {{\"count\": {count} }})",
   "invalid_email": "Invalid Email",
   "string_pass": "Password must be string",
-  "user_not_found": "User not found"
+  "user_not_found": "User not found",
+  "email_in_use": "Email in use",
+  "bad_password": "Bad password"
 }
