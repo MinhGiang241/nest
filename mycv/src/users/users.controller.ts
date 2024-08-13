@@ -12,6 +12,7 @@ import {
   Session,
   UseInterceptors,
   ClassSerializerInterceptor,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateUserDto, UpdateUserDto } from './dtos/create-user.dto';
@@ -26,6 +27,7 @@ import { AuthService } from './auth.service';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { CurrenUserInterceptor } from './interceptors/current-user.interceptor';
 import { User } from './users.entity';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @ApiTags('Users')
 @Controller('users')
@@ -35,7 +37,6 @@ import { User } from './users.entity';
   }),
 )
 @Serialize(UserDto)
-@UseInterceptors(CurrenUserInterceptor)
 export class UsersController {
   constructor(
     private userService: UsersService,
@@ -64,6 +65,7 @@ export class UsersController {
   }
 
   @Get('/whoami')
+  @UseGuards(AuthGuard)
   whoAmI(@CurrentUser() user: User) {
     return user;
   }
@@ -108,4 +110,9 @@ export class UsersController {
   updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
     return this.userService.update(parseInt(id, 0), body);
   }
+}
+function UseGuard(): (
+  target: typeof UsersController,
+) => void | typeof UsersController {
+  throw new Error('Function not implemented.');
 }
