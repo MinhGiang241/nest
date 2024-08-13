@@ -21,6 +21,7 @@ import {
   Serializeinterceptor,
 } from 'src/interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
+import { AuthService } from './auth.service';
 
 @ApiTags('Users')
 @Controller('users')
@@ -31,11 +32,15 @@ import { UserDto } from './dtos/user.dto';
 )
 @Serialize(UserDto)
 export class UsersController {
-  constructor(private userService: UsersService) {}
+  constructor(
+    private userService: UsersService,
+    private authService: AuthService,
+  ) {}
 
   @Post('/signup')
   createUser(@Body() body: CreateUserDto) {
-    return this.userService.create(body.email, body.password);
+    console.log('body', body);
+    return this.authService.signup(body.email, body.password);
   }
 
   //@UseInterceptors(new Serializeinterceptor(UserDto)) // ClassSerializerInterceptor

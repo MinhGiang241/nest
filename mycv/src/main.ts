@@ -14,7 +14,7 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter(),
   );
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix('api', { exclude: ['/'] });
 
   app.enableCors({
     origin: ['*'], // Chỉ định các nguồn gốc được phép
