@@ -27,7 +27,7 @@ import * as path from 'path';
     }),
 
     I18nModule.forRootAsync({
-      useFactory: (configService: ConfigService) => ({
+      useFactory: (_configService: ConfigService) => ({
         fallbackLanguage: 'en',
         loaderOptions: {
           path: path.join(__dirname, '/i18n/'),

@@ -1,5 +1,5 @@
 import { IsEmail, IsString } from 'class-validator';
-import { I18nContext, i18nValidationMessage } from 'nestjs-i18n';
+import { i18nValidationMessage } from 'nestjs-i18n';
 
 export class CreateUserDto {
   @IsEmail(

@@ -4,28 +4,19 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Patch,
   Post,
   Query,
-  UseFilters,
   Session,
-  UseInterceptors,
-  ClassSerializerInterceptor,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateUserDto, UpdateUserDto } from './dtos/create-user.dto';
-import { I18nValidationExceptionFilter } from 'nestjs-i18n';
 import { UsersService } from './users.service';
-import {
-  Serialize,
-  Serializeinterceptor,
-} from 'src/interceptors/serialize.interceptor';
+import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
 import { AuthService } from './auth.service';
 import { CurrentUser } from './decorators/current-user.decorator';
-import { CurrenUserInterceptor } from './interceptors/current-user.interceptor';
 import { User } from './users.entity';
 import { AuthGuard } from 'src/guards/auth.guard';
 
@@ -105,9 +96,4 @@ export class UsersController {
   updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
     return this.userService.update(parseInt(id, 0), body);
   }
-}
-function UseGuard(): (
-  target: typeof UsersController,
-) => void | typeof UsersController {
-  throw new Error('Function not implemented.');
 }
