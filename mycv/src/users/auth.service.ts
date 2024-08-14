@@ -27,7 +27,7 @@ export class AuthService {
         message: 'BAD_REQUEST',
         errors: [
           this.i18n.t('common.email_in_use', {
-            lang: I18nContext.current().lang,
+            lang: I18nContext.current()?.lang,
           }),
         ],
       });
@@ -58,7 +58,7 @@ export class AuthService {
         message: 'NOT FOUND',
         errors: [
           this.i18n.t('common.user_not_found', {
-            lang: I18nContext.current().lang,
+            lang: I18nContext.current()?.lang,
           }),
         ],
       });

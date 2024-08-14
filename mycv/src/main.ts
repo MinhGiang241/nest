@@ -11,6 +11,7 @@ import { I18nValidationExceptionFilter, I18nValidationPipe } from 'nestjs-i18n';
 // const cookieSession = require('cookie-session');
 import secureSession from '@fastify/secure-session';
 import { promisify } from 'util';
+import { ValidationError } from '@nestjs/common';
 
 const scrypt = promisify(_scrypt);
 
@@ -48,7 +49,14 @@ async function bootstrap() {
   // });
 
   app.useGlobalPipes(new I18nValidationPipe({ whitelist: true }));
-  app.useGlobalFilters(new I18nValidationExceptionFilter());
+  // Áp dụng Exception Filter cho toàn bộ ứng dụng
+  app.useGlobalFilters(
+    new I18nValidationExceptionFilter({
+      detailedErrors: false,
+      // errorFormatter: (errors: ValidationError[]) =>
+      //   errors?.map((e) => Object.values(e.constraints)),
+    }),
+  );
 
   const config = new DocumentBuilder()
     .setTitle('Example')

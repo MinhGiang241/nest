@@ -31,11 +31,6 @@ import { AuthGuard } from 'src/guards/auth.guard';
 
 @ApiTags('Users')
 @Controller('users')
-@UseFilters(
-  new I18nValidationExceptionFilter({
-    detailedErrors: false,
-  }),
-)
 @Serialize(UserDto)
 export class UsersController {
   constructor(
