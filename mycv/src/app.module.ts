@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, ValidationPipe } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
@@ -13,9 +13,16 @@ import {
   CookieResolver,
   HeaderResolver,
   I18nModule,
+  I18nValidationPipe,
   QueryResolver,
 } from 'nestjs-i18n';
 import * as path from 'path';
+import { APP_PIPE } from '@nestjs/core';
+import { randomBytes, scrypt as _scrypt } from 'crypto';
+import { promisify } from 'util';
+import secureSession from '@fastify/secure-session';
+
+const scrypt = promisify(_scrypt);
 
 @Module({
   imports: [
@@ -51,6 +58,22 @@ import * as path from 'path';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_PIPE,
+      useValue: new I18nValidationPipe({ whitelist: true }),
+    },
+  ],
 })
-export class AppModule {}
+export class AppModule {
+  static async registerSecureSession(app) {
+    const salt = randomBytes(8).toString('hex');
+    const secret = (await scrypt('helloworld', salt, 32)) as Buffer;
+
+    await app.register(secureSession, {
+      secret,
+      salt,
+    });
+  }
+}

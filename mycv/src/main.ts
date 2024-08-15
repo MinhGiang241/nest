@@ -20,13 +20,13 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter(),
   );
-  const salt = randomBytes(8).toString('hex');
-  const secret = (await scrypt('helloworld', salt, 32)) as Buffer;
-
-  await app.register(secureSession, {
-    secret,
-    salt,
-  });
+  // const salt = randomBytes(8).toString('hex');
+  // const secret = (await scrypt('helloworld', salt, 32)) as Buffer;
+  //
+  // await app.register(secureSession, {
+  //   secret,
+  //   salt,
+  // });
 
   app.setGlobalPrefix('api', { exclude: ['/view'] }); // lỗi i18n nếu thêm { exclude: ['/'] }
 
@@ -48,7 +48,7 @@ async function bootstrap() {
   //   templates: join(__dirname, '..', 'views'),
   // });
 
-  app.useGlobalPipes(new I18nValidationPipe({ whitelist: true }));
+  // app.useGlobalPipes(new I18nValidationPipe({ whitelist: true }));
   // Áp dụng Exception Filter cho toàn bộ ứng dụng
   app.useGlobalFilters(
     new I18nValidationExceptionFilter({
