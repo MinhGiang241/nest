@@ -30,7 +30,7 @@ const scrypt = promisify(_scrypt);
     ReportsModule,
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env'],
+      envFilePath: [`.env.${process.env.NODE_ENV}`],
     }),
 
     I18nModule.forRootAsync({
@@ -49,13 +49,23 @@ const scrypt = promisify(_scrypt);
       ],
       inject: [ConfigService],
     }),
-
-    TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: 'db.sqlite',
-      entities: [User, Report],
-      synchronize: true,
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => {
+        return {
+          type: 'sqlite',
+          database: config.get<string>('DB_NAME'),
+          entities: [User, Report],
+          synchronize: true,
+        };
+      },
     }),
+    // TypeOrmModule.forRoot({
+    //   type: 'sqlite',
+    //   database: 'db.sqlite',
+    //   entities: [User, Report],
+    //   synchronize: true,
+    // }),
   ],
   controllers: [AppController],
   providers: [
