@@ -77,13 +77,13 @@ const scrypt = promisify(_scrypt);
   ],
 })
 export class AppModule {
-  static async registerSecureSession(app) {
-    const salt = randomBytes(8).toString('hex');
-    const secret = (await scrypt('helloworld', salt, 32)) as Buffer;
-
-    await app.register(secureSession, {
-      secret,
-      salt,
-    });
-  }
+  // static async registerSecureSession(app) {
+  //   const salt = randomBytes(8).toString('hex');
+  //   const secret = (await scrypt('helloworld', salt, 32)) as Buffer;
+  //
+  //   await app.register(secureSession, {
+  //     secret,
+  //     salt,
+  //   });
+  // }
 }

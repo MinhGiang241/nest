@@ -16,6 +16,8 @@ export class CurrenUserInterceptor implements NestInterceptor {
     next: CallHandler<any>,
   ): Promise<Observable<any>> {
     const request = context.switchToHttp().getRequest();
+    console.log('intercept', request.session);
+
     const { userId } = request.session;
     if (userId) {
       const user = await this.userService.findById(userId);
